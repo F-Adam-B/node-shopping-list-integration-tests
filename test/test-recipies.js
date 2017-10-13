@@ -49,7 +49,7 @@ describe('Recipes', function() {
         });
     });
     it('should list newly added recipe items on PUT', function(){
-        const newIngredient = {ingredient: ['basil, Olive oil']};
+        const newIngredient = {name: 'extra items', ingredients: ['basil, Olive oil']};
         return chai.request(app)
             .get('/recipes')
             .then(function(res){
@@ -61,6 +61,7 @@ describe('Recipes', function() {
             .then(function(res){
                 res.should.have.status(204);
             });
+        });
     it('should remove a list item with delete', function(){
         return chai.request(app)
             .get('/recipes')
@@ -71,6 +72,5 @@ describe('Recipes', function() {
             .then(function(res){
                 res.should.have.status(204);
             });
-         });
-    });
+     });
 });
