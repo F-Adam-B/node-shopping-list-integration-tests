@@ -1,31 +1,37 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 
-const {app, runserver, closeServer} = require('../server');
+const {app, runServer, closeServer} = require('../server');
 
 const should = chai.should();
 
 chai.use(chaiHttp);
 
-describe('Recipies', function() {
+describe('Recipes', function() {
     before(function() {
-        return runserver();
+        return runServer();
     });
 
     after(function() {
         return closeServer();
     });
     
-    it('should list items on GET' function(){
+    it('should list recipe items on GET', function(){
         return chai.request(app)
-        .get('/shopping-list')
-        .then(function(res)) {
+        .get('/recipes')
+        .then(function(res) {
             res.should.have.status(200);
             res.should.be.json;
             res.body.should.be.a('array');
             res.body.length.should.be.at.least(1);
 
-            
-        }
-    })
+            const expectedKeys = ['id', 'name', 'ingredients'];
+            res.body.forEach(function(item) {
+                item.should.be.a('object');
+                item.should.include.keys(expectedKeys);
+            });
+        });
+    });
+
+
 });
